@@ -3,7 +3,6 @@ package com.project.contactsdemo.core.report;
 import com.project.contactsdemo.contact.dto.ContactResponseDTO;
 import net.sf.jasperreports.engine.JasperReport;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,7 +36,6 @@ class ReportServiceTest {
     }
 
     @Test
-    @Disabled("PDF export needs the jasperreports-pdf module, which is not a dependency yet")
     void rendersPdf() {
         byte[] pdf = ReportService.render(report, ROWS, "pdf");
         assertThat(new String(pdf, 0, 5, StandardCharsets.US_ASCII)).isEqualTo("%PDF-");
