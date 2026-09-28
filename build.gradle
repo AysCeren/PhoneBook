@@ -1,7 +1,7 @@
 
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.5.16'
+	id 'org.springframework.boot' version '4.1.1'
 	id 'io.spring.dependency-management' version '1.1.7'
 	//id "io.swagger.core.v3.swagger-gradle-plugin" version "2.2.28"
 }
@@ -32,16 +32,20 @@ tasks.withType(JavaCompile).configureEach {
 }
 dependencies {
 
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// Spring Boot 4 is modular: starters are split per technology (web MVC, REST client, Liquibase, ...)
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	implementation 'org.springframework.boot:spring-boot-starter-restclient' // RestTemplateBuilder
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-resttestclient' // TestRestTemplate
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// Integration tests start real PostgreSQL and Hazelcast in Docker (versions managed by Spring Boot)
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-	testImplementation 'org.testcontainers:junit-jupiter'
-	testImplementation 'org.testcontainers:postgresql'
+	testImplementation 'org.testcontainers:testcontainers-junit-jupiter'
+	testImplementation 'org.testcontainers:testcontainers-postgresql'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	//Map Struct dependencies
 	implementation("org.mapstruct:mapstruct:1.6.3")
@@ -51,15 +55,15 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.googlecode.libphonenumber/libphonenumber
 	implementation group: 'com.googlecode.libphonenumber', name: 'libphonenumber', version: '8.13.55'
 	//SWAGGER DEPENDENCY
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.17' // 2.8.x is the line for Spring Boot 3.5
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1' // 3.x is the line for Spring Boot 4
 	// Hazelcast client (the app connects to a separately running Hazelcast cluster); version managed by Spring Boot
 	implementation 'com.hazelcast:hazelcast'
-	// Database migrations; version managed by Spring Boot
-	implementation("org.liquibase:liquibase-core")
+	// Database migrations. In Spring Boot 4 the auto-configuration is in this starter; liquibase-core alone no longer runs migrations.
+	implementation("org.springframework.boot:spring-boot-starter-liquibase")
 	//########### CIRCUIT BREAKER #############################################
-	implementation("io.github.resilience4j:resilience4j-spring-boot3:2.4.0")
+	implementation("io.github.resilience4j:resilience4j-spring-boot4:2.4.0")
 	//########### Aspect Oriented Porgamming Injection ##############/////
-	implementation("org.springframework.boot:spring-boot-starter-aop")
+	implementation("org.springframework.boot:spring-boot-starter-aspectj") // renamed from spring-boot-starter-aop
 	//############ Jasper Report Library
 	// https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
 	implementation("net.sf.jasperreports:jasperreports:7.0.0")

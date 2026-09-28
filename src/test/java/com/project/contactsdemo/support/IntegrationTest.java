@@ -5,7 +5,8 @@ import com.project.contactsdemo.core.cache.CacheNames;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,9 +18,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.lifecycle.Startables;
+import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.util.List;
 
@@ -32,12 +33,13 @@ import java.util.List;
  * and empty caches.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureTestRestTemplate // Spring Boot 4 no longer adds a TestRestTemplate automatically
 @ActiveProfiles("test")
 public abstract class IntegrationTest {
 
     // Same major version as the local PostgreSQL.
     @ServiceConnection // Spring Boot points the DataSource (and Liquibase) at this container
-    static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:14-alpine");
+    static final PostgreSQLContainer POSTGRES = new PostgreSQLContainer("postgres:14-alpine");
 
     // Must match the Hazelcast client version managed by Spring Boot.
     static final GenericContainer<?> HAZELCAST = new GenericContainer<>("hazelcast/hazelcast:5.5.0")
