@@ -27,11 +27,10 @@ public class BirthCityConverter {
                 .build();
     }
     @Named("birthCityName")
-    @CircuitBreaker(name = "restTemplateService") //TODO: fallBackMethod'u nereye nasıl tanımlayacağını sor
+    @CircuitBreaker(name = "cityService") //TODO: fallBackMethod'u nereye nasıl tanımlayacağını sor
     public  String birthCityName(String birthCity) {
         URI uri = uriComponents.expand( birthCity).toUri();
         CityResponseDTO cityResponseDTO = restTemplate.getForObject(uri, CityResponseDTO.class); //neye döneceğini burada class formatında belirtiriz.
         return Objects.requireNonNull(cityResponseDTO).getIlAdi();
     }
-
 }

@@ -6,7 +6,6 @@ import com.project.contactsdemo.person.dto.PersonResponseDTO;
 import com.project.contactsdemo.person.entity.Person;
 import com.project.contactsdemo.person.mapper.PersonMapper;
 import com.project.contactsdemo.person.repository.PersonRepository;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,7 +17,6 @@ public class PersonSaveService {
     private final PersonMapper personMapper;
     private final PersonRepository personRepository;
 
-    @CircuitBreaker(name = "exampleService")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public GenericDTO<PersonResponseDTO> savePerson(PersonRequestDTO savePersonRequestDto) {
         Person person = personMapper.fromPersonRequestDTOToPersonEntity(savePersonRequestDto);
