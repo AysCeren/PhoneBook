@@ -73,6 +73,8 @@ resilience4j.circuitbreaker:
 app:
   city-service:
     base-url: ${CITY_SERVICE_BASE_URL}
+    connect-timeout: 2s
+    read-timeout: 3s
   hazelcast:
     cluster-name: ${HAZELCAST_CLUSTER_NAME:dev}
     address: ${HAZELCAST_ADDRESS:127.0.0.1:5701}
