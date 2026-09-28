@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Spring Boot 3.5 / Java 17 training project (Gradle project name `contactsdemo`, base package `com.project.contactsdemo`) modelling a phone book: `Person` 1→N `Contact`, persisted in PostgreSQL.
+Spring Boot 4.1 / Java 17 training project (Gradle project name `contactsdemo`, base package `com.project.contactsdemo`) modelling a phone book: `Person` 1→N `Contact`, persisted in PostgreSQL.
 
 ## Commands
 
@@ -23,6 +23,12 @@ Swagger UI (springdoc) is at `/swagger-ui.html` when running.
 - PostgreSQL: `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` (no defaults; startup fails if missing). Required for `bootRun` and the `@SpringBootTest` context test.
 - Hazelcast: the app is a **client** of a separate cluster (`HAZELCAST_ADDRESS`, default `127.0.0.1:5701`, cluster `dev`). Locally: `docker run -d --name phonebook-hazelcast -p 5701:5701 hazelcast/hazelcast:5.5.0` (match the client version managed by Spring Boot). The client starts asynchronously; without a cluster, cache operations log warnings and the app serves from the database.
 - City names: `core/city/CityLookup`. `HttpCityLookup` calls the external service (`CITY_SERVICE_BASE_URL`, internal network only) with timeouts, the `cityService` circuit breaker and a fallback; `StubCityLookup` (built-in plate-code table) is used under the `local` and `test` profiles. Services resolve names via `CityNameResolver`, not in mappers.
+
+### Spring Boot 4 notes
+- Starters are modular: `spring-boot-starter-webmvc` (not `-web`), `spring-boot-starter-restclient` (`RestTemplateBuilder` is in `org.springframework.boot.restclient`), `spring-boot-starter-liquibase` (liquibase-core alone doesn't run migrations), `spring-boot-starter-aspectj` (was `-aop`), `resilience4j-spring-boot4`.
+- Tests: `TestRestTemplate` is in `org.springframework.boot.resttestclient` and needs `@AutoConfigureTestRestTemplate`; Testcontainers 2.x artifacts are `testcontainers-*` and `PostgreSQLContainer` is in `org.testcontainers.postgresql`.
+- Spring uses Jackson 3 (`tools.jackson`); Jackson 2 (`com.fasterxml.jackson`) is still on the classpath only because JasperReports needs it.
+- Gradle 8.14+ is required (wrapper: 8.14.5).
 
 ## Architecture
 
