@@ -15,11 +15,9 @@ import java.util.UUID;
 public class LoggingFilter extends OncePerRequestFilter {
     //Logger instance for logging
     private static final Logger logger = LoggerFactory.getLogger(LoggingFilter.class);
-    // private final ServerHttpRequest();
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-//        req.getHeaders().get("client-ip");
         String requestId = UUID.randomUUID().toString();
         request.setAttribute("RequestID", requestId);
 //         Log request details before processing the request.
@@ -57,13 +55,6 @@ public class LoggingFilter extends OncePerRequestFilter {
         StringBuilder headers = new StringBuilder();
         request.getHeaderNames().asIterator()
                 .forEachRemaining(header -> headers.append(header).append("=").append(request.getHeader(header)).append("; "));
-        return headers.toString();
-    }
-    // Utility method to extract response headers for logging.
-    private String getResponseHeaders(HttpServletResponse response) {
-        StringBuilder headers = new StringBuilder();
-        response.getHeaderNames().stream()
-                .forEach(header -> headers.append(header).append("=").append(response.getHeader(header)).append("; "));
         return headers.toString();
     }
 }

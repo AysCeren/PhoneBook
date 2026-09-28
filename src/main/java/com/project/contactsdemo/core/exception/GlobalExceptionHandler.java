@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler{
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
-    //bunu araştır
-    //private GenericDTO errorGenericDTO =new GenericDTO(null,1);
     @ExceptionHandler({NoDataFoundException.class})
     public ResponseEntity<?> handleDataNotFoundException(NoDataFoundException exception) {
         GenericDTO<Void> errorGenericDTO =new GenericDTO<>(null,1);

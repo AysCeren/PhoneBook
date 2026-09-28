@@ -29,7 +29,6 @@ public class GetAllPersonWithAllContactService {
             throw new NoDataFoundException("No contacts found");
         }else{
             GenericDTO<List<PersonWithContactsDTO>> genericDTO = new GenericDTO<>(0,null);
-            //return personListWithContacts.stream().map(personMapper::fromPersonToPersonResponseForContactDTO).collect(Collectors.toList());
             genericDTO.setBody(personListWithContacts.stream()
                     .map(person -> {
                         PersonWithContactsDTO response = personMapper.fromPersonToPersonResponseForContactDTO(person);

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PersonGetWithIDController {
     private final PersonGetWithIDService personGetWithIDService;
 
-
     @GetMapping(path = "/restTemplateControl/{ilKodu}")
     public ResponseEntity<GenericDTO<String>> getPersonWithId(@Valid @PathVariable("ilKodu") @Parameter(name = "ilKodu", example = "6") String ilKodu) {
         GenericDTO<String> gDTO = personGetWithIDService.getPersonWithId(ilKodu);

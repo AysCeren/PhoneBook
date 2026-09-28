@@ -6,7 +6,6 @@ import com.project.contactsdemo.contact.mapper.ContactMapper;
 import com.project.contactsdemo.contact.repository.ContactRepository;
 import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.core.exception.NoDataFoundException;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

@@ -11,21 +11,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
 public class PersonSaveService {
     private final PersonMapper personMapper;
     private final PersonRepository personRepository;
-
-    //URI Builder
-    private final UriComponents uriComponents = UriComponentsBuilder
-            .fromUriString("http://siciltest.gelbim.gov.tr:32158/mernis-cache/mernis-il/get-with-ilkodu")
-            .queryParam("ilKodu", "{ilKodu}")
-            .encode()
-            .build();
 
     @CircuitBreaker(name = "exampleService")
     @Transactional(propagation = Propagation.REQUIRES_NEW)

@@ -1,6 +1,5 @@
 package com.project.contactsdemo.core.ratelimitedannotation;
 
-import lombok.Setter;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
