@@ -35,4 +35,15 @@ out/
 
 ### VS Code ###
 .vscode/
-/src/main/java/com/project/contactsdemo/Notlar
+
+### macOS ###
+.DS_Store
+
+### Logs ###
+logs/
+*.log
+
+### Environment ###
+.env
+.env.*
+!.env.example
