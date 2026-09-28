@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Spring Boot 3.2 / Java 17 training project (Gradle project name `contactsdemo`, base package `com.project.contactsdemo`) modelling a phone book: `Person` 1→N `Contact`, persisted in PostgreSQL.
+Spring Boot 3.5 / Java 17 training project (Gradle project name `contactsdemo`, base package `com.project.contactsdemo`) modelling a phone book: `Person` 1→N `Contact`, persisted in PostgreSQL.
 
 ## Commands
 
@@ -21,7 +21,7 @@ Swagger UI (springdoc) is at `/swagger-ui.html` when running.
 ### Configuration and runtime dependencies
 - Config values come from environment variables; locally from a git-ignored `.env` (copy `.env.example`), loaded via `spring.config.import`. Real env vars override `.env`. In `.env`, activate profiles as `spring.profiles.active=local` (the `SPRING_PROFILES_ACTIVE` form only works as a real env var).
 - PostgreSQL: `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` (no defaults; startup fails if missing). Required for `bootRun` and the `@SpringBootTest` context test.
-- Hazelcast: the app is a **client** of a separate cluster (`HAZELCAST_ADDRESS`, default `127.0.0.1:5701`, cluster `dev`). Locally: `docker run -d --name phonebook-hazelcast -p 5701:5701 hazelcast/hazelcast:5.3.7` (match the client version managed by Spring Boot). The client starts asynchronously; without a cluster, cache operations log warnings and the app serves from the database.
+- Hazelcast: the app is a **client** of a separate cluster (`HAZELCAST_ADDRESS`, default `127.0.0.1:5701`, cluster `dev`). Locally: `docker run -d --name phonebook-hazelcast -p 5701:5701 hazelcast/hazelcast:5.5.0` (match the client version managed by Spring Boot). The client starts asynchronously; without a cluster, cache operations log warnings and the app serves from the database.
 - City names: `core/city/CityLookup`. `HttpCityLookup` calls the external service (`CITY_SERVICE_BASE_URL`, internal network only) with timeouts, the `cityService` circuit breaker and a fallback; `StubCityLookup` (built-in plate-code table) is used under the `local` and `test` profiles. Services resolve names via `CityNameResolver`, not in mappers.
 
 ## Architecture
@@ -41,7 +41,6 @@ Package-by-feature (`person/`, `contact/`) with shared infrastructure in `core/`
 ## Notes
 - Many code comments are in Turkish.
 - Tests: `*IntegrationTest` classes (and `ContactsdemoApplicationTests`) extend `support/IntegrationTest`, which starts PostgreSQL and Hazelcast containers once per run (Testcontainers; **Docker must be running**), uses the `test` profile (`src/test/resources/application-test.yaml`: stub city lookup, rate limiter off) and empties tables and caches before each test. They don't need `.env`. Other tests are plain unit tests. Integration tests document the current API behavior; change them deliberately.
-- `build.gradle` pins `testcontainers.version` to 1.21.4 because the version managed by Spring Boot 3.2 can't talk to Docker Engine 29+; remove the pin when upgrading Spring Boot.
 
 ## Working agreements
 - This is a learning project. When making architectural or security changes, explain what you did and why.
