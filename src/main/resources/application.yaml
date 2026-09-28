@@ -1,9 +1,13 @@
 spring:
+  config:
+    # Local development: read variables from .env in the working directory (see .env.example).
+    # Real environment variables take precedence over this file.
+    import: optional:file:.env[.properties]
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: admin
-    url: jdbc:postgresql://localhost:5432/phonebook
-    password: admin
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     properties:
       hibernate:
@@ -74,3 +78,11 @@ resilience4j.circuitbreaker:
   configs:
     default:
         register-health-indicator: 'true'
+
+#application-specific settings (bound by the records in core/properties)
+app:
+  city-service:
+    base-url: ${CITY_SERVICE_BASE_URL}
+  hazelcast:
+    cluster-name: ${HAZELCAST_CLUSTER_NAME:dev}
+    address: ${HAZELCAST_ADDRESS:127.0.0.1:5701}

@@ -4,6 +4,7 @@ import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;
 import com.hazelcast.core.HazelcastInstance;
+import com.project.contactsdemo.core.properties.HazelcastProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,12 +12,12 @@ import org.springframework.context.annotation.Configuration;
 public class HazelcastClientConfig {
 
     @Bean
-    public ClientConfig clientConfig(){
+    public ClientConfig clientConfig(HazelcastProperties hazelcastProperties){
         ClientConfig clientConfig = new ClientConfig();
         clientConfig.setInstanceName("training-instance");
-        clientConfig.setClusterName("dev");
+        clientConfig.setClusterName(hazelcastProperties.clusterName());
         ClientNetworkConfig networkConfig = clientConfig.getNetworkConfig();
-        networkConfig.addAddress("127.0.0.1:5701");
+        networkConfig.addAddress(hazelcastProperties.address());
         networkConfig
                 .setRedoOperation(true)
                 .setConnectionTimeout(200);
