@@ -40,7 +40,7 @@ public abstract class IntegrationTest {
     static final PostgreSQLContainer<?> POSTGRES = new PostgreSQLContainer<>("postgres:14-alpine");
 
     // Must match the Hazelcast client version managed by Spring Boot.
-    static final GenericContainer<?> HAZELCAST = new GenericContainer<>("hazelcast/hazelcast:5.3.7")
+    static final GenericContainer<?> HAZELCAST = new GenericContainer<>("hazelcast/hazelcast:5.5.0")
             .withExposedPorts(5701)
             .waitingFor(Wait.forLogMessage(".*is STARTED.*", 1));
 
