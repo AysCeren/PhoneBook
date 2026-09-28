@@ -8,6 +8,8 @@ import com.project.contactsdemo.person.mapper.PersonMapper;
 import com.project.contactsdemo.person.repository.PersonRepository;
 import com.project.contactsdemo.core.cache.CacheNames;
 import com.project.contactsdemo.core.cache.CacheService;
+import com.project.contactsdemo.core.city.CityNameResolver;
+import com.project.contactsdemo.core.city.CityNameResolver.CityNames;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,6 +26,7 @@ public class PersonGetAllService {
     private final PersonMapper personMapper;
     private final PersonRepository personRepository;
     private final CacheService cacheService;
+    private final CityNameResolver cityNameResolver;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public GenericDTO<List<PersonResponseDTO>> getAllPerson() throws NoDataFoundException {
@@ -39,12 +42,19 @@ public class PersonGetAllService {
         if (personList.isEmpty()) {
             throw new NoDataFoundException("There is no person found");
         }
+        CityNames cityNames = cityNameResolver.resolve(personList.stream().map(Person::getBirthCity));
         List<PersonResponseDTO> allPerson= personList.stream()
-                .map(personMapper::fromPersonToPersonResponseDto)
+                .map(person -> {
+                    PersonResponseDTO response = personMapper.fromPersonToPersonResponseDto(person);
+                    response.setBirthCity(cityNames.nameFor(person.getBirthCity()));
+                    return response;
+                })
                 .collect(Collectors.toList());
         GenericDTO<List<PersonResponseDTO>> genericDTO = new GenericDTO<>(0,null);
         genericDTO.setBody(allPerson);
-        cacheService.saveToCache(allPerson, key, mapName);
+        if (cityNames.complete()) {
+            cacheService.saveToCache(allPerson, key, mapName);
+        } //otherwise some names fell back to codes (e.g. city service down): don't cache the degraded list
         return genericDTO;
     }
 }
