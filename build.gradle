@@ -60,7 +60,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-aop")
 	//############ Jasper Report Library
 	// https://mvnrepository.com/artifact/net.sf.jasperreports/jasperreports
-	implementation("net.sf.jasperreports:jasperreports:7.0.0")}
+	implementation("net.sf.jasperreports:jasperreports:7.0.0")
+	// PDF export moved to a separate module in JasperReports 7
+	implementation("net.sf.jasperreports:jasperreports-pdf:7.0.0")
+}
 tasks.named('test') {
 	useJUnitPlatform()
 }
