@@ -1,5 +1,7 @@
 package com.project.contactsdemo.person.service;
 
+import com.project.contactsdemo.core.city.CityNameResolver;
+import com.project.contactsdemo.core.city.CityNameResolver.CityNames;
 import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.core.exception.NoDataFoundException;
 import com.project.contactsdemo.person.dto.PersonWithContactsDTO;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 public class GetAllPersonWithAllContactService {
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
+    private final CityNameResolver cityNameResolver;
 
     @Transactional(propagation = Propagation.REQUIRED)
     // Note: Transactional annotation will not work on private methods due to the Spring AOP Proxy Mechanism
@@ -27,9 +30,11 @@ public class GetAllPersonWithAllContactService {
             throw new NoDataFoundException("No contacts found");
         }else{
             GenericDTO<List<PersonWithContactsDTO>> genericDTO = new GenericDTO<>(0,null);
+            CityNames cityNames = cityNameResolver.resolve(personListWithContacts.stream().map(Person::getBirthCity));
             genericDTO.setBody(personListWithContacts.stream()
                     .map(person -> {
                         PersonWithContactsDTO response = personMapper.fromPersonToPersonResponseForContactDTO(person);
+                        response.setBirthCity(cityNames.nameFor(person.getBirthCity()));
                         response.setMessage(response.getContacts().size() + " contacts for " + person.getFirstName() + " " + person.getLastName());
                         return response;
                     })
