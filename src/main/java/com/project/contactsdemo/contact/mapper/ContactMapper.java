@@ -11,9 +11,6 @@ import java.util.List;
 
 @Mapper(uses = {PersonPersonIDMapperMethods.class})
 public interface ContactMapper {
-   // PersonRepository personRepository = Mappers.getMapper(PersonRepository.class);
-    //@Mapping(target = "phoneNo", source = "phoneNumber")
-    //List<Contact> fromContactRequestDTOToContactEntity(List<ContactRequestDTO> requestDto);
     @Mapping(source = "personId", target="person", qualifiedByName = "mapPersonIdToPerson")
     @Mapping(target = "phoneNo", source = "phoneNumber")
     Contact fromContactRequestDTOToContactEntity(ContactRequestDTO requestDto);

@@ -1,6 +1,5 @@
 package com.project.contactsdemo.person.service;
 
-import com.project.contactsdemo.core.dto.CityResponseDTO;
 import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.person.dto.PersonResponseDTO;
 import com.project.contactsdemo.person.entity.Person;
@@ -10,18 +9,12 @@ import com.project.contactsdemo.person.repository.PersonRepository;
 import com.project.contactsdemo.core.cache.CacheService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,12 +25,6 @@ public class PersonGetAllService {
     private final PersonRepository personRepository;
     private final CacheService cacheService;
 
-    //URI Builder
-    private final UriComponents uriComponents = UriComponentsBuilder
-            .fromUriString("http://siciltest.gelbim.gov.tr:32158/mernis-cache/mernis-il/get-with-ilkodu")
-            .queryParam("ilKodu", "{ilKodu}")
-            .encode()
-            .build();
     @CircuitBreaker(name = "exampleService")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public GenericDTO<List<PersonResponseDTO>> getAllPerson() throws NoDataFoundException {

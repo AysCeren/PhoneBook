@@ -7,7 +7,6 @@ import com.project.contactsdemo.contact.repository.ContactRepository;
 import com.project.contactsdemo.core.cache.CacheService;
 import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.core.exception.NoDataFoundException;
-import com.project.contactsdemo.person.dto.PersonResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;

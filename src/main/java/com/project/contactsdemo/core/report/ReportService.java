@@ -4,7 +4,6 @@ package com.project.contactsdemo.core.report;
 import com.project.contactsdemo.contact.dto.ContactResponseDTO;
 import com.project.contactsdemo.contact.mapper.ContactMapper;
 import com.project.contactsdemo.contact.repository.ContactRepository;
-import com.project.contactsdemo.contact.service.GetAllContactService;
 import lombok.RequiredArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -27,7 +26,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ReportService {
     //Note: The most important part for the db connection
-    private final GetAllContactService contactService;
     private final ContactRepository contactRepository;
     private final ContactMapper contactMapper;
 

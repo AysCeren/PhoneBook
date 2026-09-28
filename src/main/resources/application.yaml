@@ -30,16 +30,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-logging:
-  level:
-    org:
-      springframework:
-        web:
-          filter:
-            CommonsRequestLoggingFilter: DEBUG
-
-  file:
-    name: myapplication.log
 #set up a rate limiter
 rate-limiter:
   enabled: true #bu bir endpoint için değil, applicaton'ımızın rate limiter şartı

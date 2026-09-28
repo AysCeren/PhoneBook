@@ -1,7 +1,6 @@
 package com.project.contactsdemo.contact.controller;
 
 import com.project.contactsdemo.contact.dto.ContactResponseDTO;
-import com.project.contactsdemo.contact.service.ContactSaveService;
 import com.project.contactsdemo.contact.service.GetAllContactService;
 import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.core.ratelimitedannotation.RateLimited;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
