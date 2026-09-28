@@ -21,6 +21,10 @@ configurations {
 	}
 }
 
+// Testcontainers 1.19.8 (managed by Spring Boot 3.2) can't talk to Docker Engine 29+ (API >= 1.44 required).
+// Remove this override after upgrading Spring Boot (roadmap step 9), which manages a compatible version.
+ext['testcontainers.version'] = '1.21.4'
+
 repositories {
 	mavenCentral()
 }
@@ -37,6 +41,10 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	// Integration tests start real PostgreSQL and Hazelcast in Docker (versions managed by Spring Boot)
+	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+	testImplementation 'org.testcontainers:junit-jupiter'
+	testImplementation 'org.testcontainers:postgresql'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	//Map Struct dependencies
 	implementation("org.mapstruct:mapstruct:1.6.3")

@@ -1,0 +1,17 @@
+# Test profile. Supplies the values that otherwise come from .env / environment variables,
+# so tests don't depend on a developer's local setup.
+spring:
+  datasource:
+    # Replaced by the Testcontainers PostgreSQL connection (@ServiceConnection in IntegrationTest);
+    # set here only so the ${DB_*} placeholders in application.yaml don't have to resolve.
+    url: jdbc:postgresql://replaced-by-testcontainers/unused
+    username: unused
+    password: unused
+
+app:
+  city-service:
+    base-url: http://city-service.invalid # never called: the test profile uses StubCityLookup
+
+rate-limiter:
+  # Tests call the same endpoints many times per minute. RateLimitIntegrationTest enables it explicitly.
+  enabled: false
