@@ -51,7 +51,8 @@ dependencies {
 	implementation 'commons-io:commons-io:2.11.0'
 	//implementation('org.apache.tomcat:tomcat-catalina:10.1.16')
 	implementation 'org.springframework.boot:spring-boot-starter-logging'
-	implementation 'com.hazelcast.jet.contrib:hazelcast-jet-spring-boot-starter:2.0.0'
+	// Hazelcast client (the app connects to a separately running Hazelcast cluster); version managed by Spring Boot
+	implementation 'com.hazelcast:hazelcast'
 	// https://mvnrepository.com/artifact/org.liquibase/liquibase-gradle-plugin
 	implementation("org.liquibase:liquibase-core:4.24.0")
 	//########### CIRCUIT BREAKER #############################################
