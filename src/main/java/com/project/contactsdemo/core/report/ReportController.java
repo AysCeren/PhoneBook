@@ -1,7 +1,6 @@
 package com.project.contactsdemo.core.report;
 
 import lombok.RequiredArgsConstructor;
-import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.FileNotFoundException;
 
 @Controller
 @RequestMapping({"/api"})
@@ -24,7 +22,7 @@ public class ReportController {
 
 
     @RequestMapping(method = {RequestMethod.GET}, path = {"/contactReport/{format}"})
-    public ResponseEntity<Resource> getItemReport(@PathVariable("format") String format) throws JRException, FileNotFoundException {
+    public ResponseEntity<Resource> getItemReport(@PathVariable("format") String format) {
 
         byte[] reportContent = reportService.getItemReport(format);
         ByteArrayResource resource = new ByteArrayResource(reportContent);

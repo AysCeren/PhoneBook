@@ -6,7 +6,6 @@ import com.project.contactsdemo.person.dto.PersonWithContactsDTO;
 import com.project.contactsdemo.person.entity.Person;
 import com.project.contactsdemo.person.mapper.PersonMapper;
 import com.project.contactsdemo.person.repository.PersonRepository;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,7 +19,6 @@ public class GetAllPersonWithAllContactService {
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
 
-    @CircuitBreaker(name = "exampleService")
     @Transactional(propagation = Propagation.REQUIRED)
     // Note: Transactional annotation will not work on private methods due to the Spring AOP Proxy Mechanism
     public GenericDTO<List<PersonWithContactsDTO>> getAllPersonWithContacts(){

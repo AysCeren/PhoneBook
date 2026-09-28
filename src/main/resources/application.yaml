@@ -45,26 +45,26 @@ rate-limiter:
 #set up a circuit breaker configuration
 resilience4j.circuitbreaker:
   instances:
-    exampleService:
+    # Protects calls to the external city lookup service (BirthCityConverter).
+    # One breaker per external dependency, so its failures don't block unrelated operations.
+    cityService:
       registerHealthIndicator: true
       #Either COUNT_BASED or TIME_BASED
       slidingWindowType: count_based
       #The number of calls to consider the circuit breaker's state. Last 'x' calls will be monitored to decide on status.
-      slidingWindowSize: '10'
+      slidingWindowSize: 10
       #The minimum number of calls required before the circuit breaker evaluates its state
-      minimumNumberOfCalls: '5'
+      minimumNumberOfCalls: 5
       #Percentage! if 50% percent of calls fail, the circuit will 'OPEN'
-      failureRateThreshold: '50'
-      #The amount of time (in milliseconds) the circuit breaker will stay in the open state before moving to half-open.
-      waitDurationInOpenState: 10000s
+      failureRateThreshold: 50
+      #How long the circuit breaker stays OPEN before moving to HALF_OPEN (a Duration: 10s = 10 seconds)
+      waitDurationInOpenState: 10s
       # The number of test calls permitted when in the half-open state.
-      permittedNumberOfCallsInHalfOpenState: '3'
+      permittedNumberOfCallsInHalfOpenState: 3
       #Defines the percentage threshold of slow calls required to open the circuit
-      slowCallRateThreshold: '50'
-      #Specifies the duration threshold in milliseconds to classify a call as “slow"
-      slowCallDurationThreshold: 2000
-      ignoreExceptions:
-        com.project.contactsdemo.core.exception.NoDataFoundException
+      slowCallRateThreshold: 50
+      #A call that takes longer than this counts as "slow" (a Duration: 2s = 2 seconds)
+      slowCallDurationThreshold: 2s
   configs:
     default:
         register-health-indicator: 'true'
@@ -73,6 +73,8 @@ resilience4j.circuitbreaker:
 app:
   city-service:
     base-url: ${CITY_SERVICE_BASE_URL}
+    connect-timeout: 2s
+    read-timeout: 3s
   hazelcast:
     cluster-name: ${HAZELCAST_CLUSTER_NAME:dev}
     address: ${HAZELCAST_ADDRESS:127.0.0.1:5701}

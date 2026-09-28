@@ -6,8 +6,8 @@ import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.core.exception.NoDataFoundException;
 import com.project.contactsdemo.person.entity.Person;
 import com.project.contactsdemo.person.repository.PersonRepository;
+import com.project.contactsdemo.core.cache.CacheNames;
 import com.project.contactsdemo.core.cache.CacheService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -23,11 +23,10 @@ public class GetPersonWithAllContactService {
     private final PersonRepository personRepository;
     private final ContactMapper contactMapper;
     private final CacheService cacheService;
-    @CircuitBreaker(name = "exampleService")
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public GenericDTO<List<ContactResponseDTO>> getAllContactsOfPerson(Long personId) {
         String key = personId.toString();
-        String map = "personWithContacts";
+        String map = CacheNames.PERSON_WITH_CONTACTS;
         List<ContactResponseDTO> fromCache = (List<ContactResponseDTO>) cacheService.getFromCache(key, map);
         if ((fromCache != null && fromCache.size() != 0)) {
             GenericDTO<List<ContactResponseDTO>> genericDTO = new GenericDTO<>(0, null);
