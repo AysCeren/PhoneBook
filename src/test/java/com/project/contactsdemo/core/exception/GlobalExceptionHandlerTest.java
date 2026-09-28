@@ -104,7 +104,8 @@ class GlobalExceptionHandlerTest {
     @Test
     void springExceptionKeepsItsOwnStatus() throws Exception {
         mockMvc.perform(get("/response-status"))
-                .andExpect(status().isConflict());
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.errorMessage").value("Already exists"));
     }
 
     @RestController
@@ -155,7 +156,7 @@ class GlobalExceptionHandlerTest {
 
         @GetMapping("/response-status")
         void responseStatus() {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Already exists");
         }
     }
 }

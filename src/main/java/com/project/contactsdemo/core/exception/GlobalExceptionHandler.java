@@ -99,8 +99,11 @@ public class GlobalExceptionHandler {
                 : HttpStatus.INTERNAL_SERVER_ERROR;
         if (status.is5xxServerError()) {
             logger.error("Unhandled exception", exception); //full details stay in the server log
+            return error(status, UNEXPECTED_ERROR_MESSAGE);
         }
-        return error(status, UNEXPECTED_ERROR_MESSAGE);
+        // A 4xx from a Spring ErrorResponse (e.g. ResponseStatusException): its detail is written for the client.
+        String detail = ((ErrorResponse) exception).getBody().getDetail();
+        return error(status, detail != null ? detail : status.toString());
     }
 
     private static ResponseEntity<GenericDTO<Void>> error(HttpStatusCode status, String message) {
