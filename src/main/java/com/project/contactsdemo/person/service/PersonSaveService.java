@@ -1,5 +1,7 @@
 package com.project.contactsdemo.person.service;
 
+import com.project.contactsdemo.core.cache.CacheNames;
+import com.project.contactsdemo.core.cache.CacheService;
 import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.person.dto.PersonRequestDTO;
 import com.project.contactsdemo.person.dto.PersonResponseDTO;
@@ -16,11 +18,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersonSaveService {
     private final PersonMapper personMapper;
     private final PersonRepository personRepository;
+    private final CacheService cacheService;
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public GenericDTO<PersonResponseDTO> savePerson(PersonRequestDTO savePersonRequestDto) {
         Person person = personMapper.fromPersonRequestDTOToPersonEntity(savePersonRequestDto);
         this.personRepository.save(person);
+        cacheService.clearAfterCommit(CacheNames.PERSON_RESPONSE_ALL); //the cached "all persons" list is now outdated
         PersonResponseDTO personResponseDTO = personMapper.fromPersonToPersonResponseDto(person);
         GenericDTO<PersonResponseDTO> genericDTO = new GenericDTO<>(0,null);
         genericDTO.setBody(personResponseDTO);

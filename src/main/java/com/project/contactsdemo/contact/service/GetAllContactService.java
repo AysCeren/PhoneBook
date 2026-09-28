@@ -4,6 +4,7 @@ import com.project.contactsdemo.contact.dto.ContactResponseDTO;
 import com.project.contactsdemo.contact.entity.Contact;
 import com.project.contactsdemo.contact.mapper.ContactMapper;
 import com.project.contactsdemo.contact.repository.ContactRepository;
+import com.project.contactsdemo.core.cache.CacheNames;
 import com.project.contactsdemo.core.cache.CacheService;
 import com.project.contactsdemo.core.dto.GenericDTO;
 import com.project.contactsdemo.core.exception.NoDataFoundException;
@@ -20,8 +21,8 @@ public class GetAllContactService {
 
     public GenericDTO<List<ContactResponseDTO>> getAllContactDTO() {
 
-        String key = "contactResponseAll";
-        String mapName = "contactResponseAll";
+        String key = CacheNames.ALL;
+        String mapName = CacheNames.CONTACT_RESPONSE_ALL;
         List<ContactResponseDTO> fromCache = (List<ContactResponseDTO>) cacheService.getFromCache(key,mapName);
         if((fromCache != null && fromCache.size() != 0)) {
             GenericDTO<List<ContactResponseDTO>> genericDTO = new GenericDTO<>(0,null);

@@ -6,6 +6,7 @@ import com.project.contactsdemo.person.entity.Person;
 import com.project.contactsdemo.core.exception.NoDataFoundException;
 import com.project.contactsdemo.person.mapper.PersonMapper;
 import com.project.contactsdemo.person.repository.PersonRepository;
+import com.project.contactsdemo.core.cache.CacheNames;
 import com.project.contactsdemo.core.cache.CacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ public class PersonGetAllService {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public GenericDTO<List<PersonResponseDTO>> getAllPerson() throws NoDataFoundException {
-        String key = "personResponseAll";
-        String mapName = "personResponseAll";
+        String key = CacheNames.ALL;
+        String mapName = CacheNames.PERSON_RESPONSE_ALL;
         List<PersonResponseDTO> fromCache = (List<PersonResponseDTO>) cacheService.getFromCache(key,mapName);
         if((fromCache != null && fromCache.size() != 0)) {
             GenericDTO<List<PersonResponseDTO>> genericDTO = new GenericDTO<>(0,null);
