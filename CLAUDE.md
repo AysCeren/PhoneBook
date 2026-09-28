@@ -40,7 +40,8 @@ Package-by-feature (`person/`, `contact/`) with shared infrastructure in `core/`
 
 ## Notes
 - Many code comments are in Turkish.
-- Unit tests in `src/test` don't need a database; `ContactsdemoApplicationTests` needs PostgreSQL and runs with the `test` profile.
+- Tests: `*IntegrationTest` classes (and `ContactsdemoApplicationTests`) extend `support/IntegrationTest`, which starts PostgreSQL and Hazelcast containers once per run (Testcontainers; **Docker must be running**), uses the `test` profile (`src/test/resources/application-test.yaml`: stub city lookup, rate limiter off) and empties tables and caches before each test. They don't need `.env`. Other tests are plain unit tests. Integration tests document the current API behavior; change them deliberately.
+- `build.gradle` pins `testcontainers.version` to 1.21.4 because the version managed by Spring Boot 3.2 can't talk to Docker Engine 29+; remove the pin when upgrading Spring Boot.
 
 ## Working agreements
 - This is a learning project. When making architectural or security changes, explain what you did and why.
