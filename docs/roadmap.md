@@ -29,6 +29,8 @@ Each step is a separate branch and PR. Commits follow Conventional Commits.
    - `RestTemplate` has no connect/read timeouts.
    - `GlobalExceptionHandler` throws inside an `@ExceptionHandler`; `NoDataFoundException` returns 400 instead of 404.
    - Stale caches: no eviction on writes (short-term: evict on save/update/delete; full redesign in Phase 4).
+   - `GlobalExceptionHandler` returns raw exception messages to clients (e.g. the internal city-service URL in an I/O error).
+   - Report export fails with `JRException: Unable to load report`: the `.jrxml` uses the pre-7 format, but the project uses JasperReports 7. `ResourceUtils.getFile` also fails inside a packaged jar.
 
 6. **Abstract the city service**
    Put the external city lookup behind an interface and add a local stub implementation, so the app and tests don't depend on the external service.
